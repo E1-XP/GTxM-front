@@ -3,6 +3,7 @@
   background-color: $lightGray;
   position: relative;
   transition: all 300ms ease-in-out;
+
   > div {
     &.is-open {
       overflow: hidden;
