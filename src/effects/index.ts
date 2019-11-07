@@ -59,7 +59,6 @@ export const getImages = (part: number) =>
           const thumb = new Image();
 
           thumb.addEventListener("load", handleLoad);
-
           thumb.src = `${URL}/${image.thumbnail}`;
 
           counter += 1;
@@ -75,16 +74,13 @@ export const getImages = (part: number) =>
     });
 
 export const getMenuImages = () => {
-  const URL = "https://boiling-citadel-14104.herokuapp.com";
+  const baseURL = `${URL}/static/img`;
 
   const backgrounds = [
-    `${URL}/static/img/1/kr048.jpg`,
-
-    `${URL}/static/img/2/bt52Mo.jpg`,
-
-    `${URL}/static/img/3/917v2c222.jpg`,
-
-    `${URL}/static/img/4/S1PP2.jpg`
+    `${baseURL}/1/kr048.jpg`,
+    `${baseURL}/2/bt52Mo.jpg`,
+    `${baseURL}/3/917v2c222.jpg`,
+    `${baseURL}/4/S1PP2.jpg`
   ];
 
   backgrounds.forEach(url => {

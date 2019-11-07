@@ -2,6 +2,21 @@ import { html } from "project-f";
 
 import { Props } from "./index";
 
+export default ({ getPartName, currentPart }: Props) => html`
+    <header class="page_header">
+            <h1 class="page_header__logo">
+                <a id="js-header-logo">
+                    <img src="/assets/img/main.png" alt="GTxMotorsports">
+                </a>             
+            </h1>     
+             ${
+               currentPart && currentPart !== 5
+                 ? stdMenu(getPartName)
+                 : baMenu()
+             }
+    </header>
+  `;
+
 const stdMenu = (getPartName: any) => html`
     <nav class="page_header__navigation">
         <ul class="navigation__list">
@@ -30,18 +45,3 @@ const baMenu = () => html`
         </ul>
     </nav>
 `;
-console.log(window.location.hostname);
-export default ({ getPartName, currentPart }: Props) => html`
-    <header class="page_header">
-            <h1 class="page_header__logo">
-                <a id="js-header-logo">
-                    <img src="/assets/img/main.png" alt="GTxMotorsports">
-                </a>             
-            </h1>     
-             ${
-               currentPart && currentPart !== 5
-                 ? stdMenu(getPartName)
-                 : baMenu()
-             }
-    </header>
-  `;

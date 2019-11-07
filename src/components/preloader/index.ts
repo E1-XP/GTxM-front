@@ -5,7 +5,7 @@ import * as effects from "./../../effects";
 import template from "./template";
 
 export interface Props {
-  loadStatus: number;
+  value: string;
 }
 
 export class Preloader extends Component {
@@ -19,10 +19,14 @@ export class Preloader extends Component {
     effects.populateLocalStorage();
   };
 
-  render() {
-    const state = <State>this.model.getState();
-    const { loadStatus } = state;
+  getValue() {
+    const { loadStatus } = <State>this.model.getState();
+    return loadStatus < 10 ? `0${loadStatus}` : `${loadStatus}`;
+  }
 
-    return template({ loadStatus });
+  render() {
+    const value = this.getValue();
+
+    return template({ value });
   }
 }
