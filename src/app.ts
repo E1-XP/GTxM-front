@@ -1,6 +1,6 @@
-import { run, html } from "./lib";
+import { run, html } from "project-f";
 
-import { Component } from "./lib/component";
+import { Component } from "project-f";
 
 import { Preloader } from "./components/preloader";
 import { Page } from "./components/page";

@@ -1,4 +1,4 @@
-import { html } from "./../../lib";
+import { html } from "project-f";
 
 type TbtnContent =
   | string

@@ -1,13 +1,12 @@
 import "whatwg-fetch";
 const vibrant: any = require("node-vibrant");
 
-import { container } from "./../lib/IOC";
-import { types } from "./../lib/IOC/types";
-import { Model } from "./../lib/model";
+import { container, types, Model } from "project-f";
 
 import { ImageData } from "./../store";
 
-const URL = `https://boiling-citadel-14104.herokuapp.com`;
+import config from "./../config";
+const { API_URL: URL } = config;
 
 interface Response {
   images: ImageData[];

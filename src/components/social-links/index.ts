@@ -1,7 +1,4 @@
-import { Component } from "./../../lib/component";
-import { html } from "./../../lib";
-
-import { icon } from "./../shared";
+import { Component, html } from "project-f";
 
 export interface Props {}
 

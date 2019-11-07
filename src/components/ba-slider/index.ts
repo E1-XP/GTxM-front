@@ -1,6 +1,10 @@
-import { Component } from "./../../lib/component";
+import { Component } from "project-f";
 
 import template from "./template";
+import { State } from "../../store";
+
+import config from "./../../config";
+const { API_URL: URL } = config;
 
 export interface Props {
   images: any[] | undefined;
@@ -133,7 +137,6 @@ export class CompareSlider extends Component {
 
   getImageList = () => {
     const { images, currentSlide } = this.model.getState();
-    const URL = `https://boiling-citadel-14104.herokuapp.com`;
 
     if (currentSlide === undefined) throw new Error("cant find model state");
 
@@ -150,8 +153,7 @@ export class CompareSlider extends Component {
   };
 
   getThumbnails = () => {
-    const { images, currentSlide } = this.model.getState();
-    const URL = `https://boiling-citadel-14104.herokuapp.com`;
+    const { images, currentSlide } = this.model.getState<State>();
 
     if (currentSlide === undefined || !images) {
       throw new Error("state sync error");

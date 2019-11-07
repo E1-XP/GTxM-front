@@ -1,4 +1,4 @@
-import { html, run } from "./../../lib";
+import { html, run } from "project-f";
 
 import { Props } from "./index";
 

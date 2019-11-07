@@ -1,4 +1,4 @@
-import { html } from "./../../lib";
+import { html } from "project-f";
 
 import { Props } from "./index";
 import { button, icon } from "./../shared";
