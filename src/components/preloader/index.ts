@@ -1,4 +1,4 @@
-import { Component } from "./../../lib/component";
+import { Component } from "project-f";
 import { State } from "./../../store";
 import * as effects from "./../../effects";
 

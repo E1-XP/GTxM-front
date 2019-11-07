@@ -12,11 +12,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inversify": "^4.13.0",
     "lodash.clonedeep": "^4.5.0",
     "node-vibrant": "^3.0.0",
     "node.normalize.scss": "^3.0.3",
-    "reflect-metadata": "^0.1.12",
+    "project-f": "git://github.com/E1-XP/project-f.git#dev",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
@@ -39,6 +38,6 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.6"
+    "webpack-dev-server": "^3.9.0"
   }
 }

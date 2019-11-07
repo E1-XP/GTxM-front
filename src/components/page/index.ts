@@ -1,6 +1,6 @@
-import { Component, IComponent } from "./../../lib/component";
+import { Component, IComponent } from "project-f";
 
-import * as effects  from './../../effects';
+import * as effects from "./../../effects";
 
 import template from "./template";
 
@@ -15,9 +15,9 @@ export class Page extends Component {
 
   pageBtn: HTMLElement | null = null;
 
-  onMount =()=>{
+  onMount = () => {
     effects.getMenuImages();
-  }
+  };
 
   onUpdate = () => {
     this.attachHandlers();

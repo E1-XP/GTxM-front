@@ -1,22 +1,23 @@
-import { Component } from "./../../lib/component";
+import { Component } from "project-f";
 
 import template from "./template";
+
+import config from "./../../config";
+const { API_URL: URL } = config;
 
 export interface Props {
   getMenuItems: () => string[];
 }
 
 export class Navigation extends Component {
-  URL = "https://boiling-citadel-14104.herokuapp.com";
-
   backgrounds = [
-    `${this.URL}/static/img/1/kr048.jpg`,
+    `${URL}/static/img/1/kr048.jpg`,
 
-    `${this.URL}/static/img/2/bt52Mo.jpg`,
+    `${URL}/static/img/2/bt52Mo.jpg`,
 
-    `${this.URL}/static/img/3/917v2c222.jpg`,
+    `${URL}/static/img/3/917v2c222.jpg`,
 
-    `${this.URL}/static/img/4/S1PP2.jpg`
+    `${URL}/static/img/4/S1PP2.jpg`
   ];
 
   onMount = () => {

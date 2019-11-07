@@ -1,7 +1,11 @@
-import { Component } from "./../../lib/component";
+import { Component } from "project-f";
 
+import { State } from "./../../store";
 import * as effects from "./../../effects";
 import template from "./template";
+
+import config from "./../../config";
+const { API_URL: URL } = config;
 
 export interface Props {
   images: any[] | undefined;
@@ -253,8 +257,7 @@ export class Slider extends Component {
   };
 
   getImageList = () => {
-    const { images } = this.model.getState();
-    const URL = `https://boiling-citadel-14104.herokuapp.com`;
+    const { images } = this.model.getState<State>();
 
     if (!images) return "";
 
@@ -331,8 +334,7 @@ export class Slider extends Component {
   };
 
   getThumbnails = () => {
-    const { images, currentSlide } = this.model.getState();
-    const URL = `https://boiling-citadel-14104.herokuapp.com`;
+    const { images, currentSlide } = this.model.getState<State>();
 
     const isImgActive = (idx: number) => currentSlide === idx;
 
