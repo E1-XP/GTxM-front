@@ -27,7 +27,7 @@
   }
 
   &__background {
-    background-image: url("/assets/img/ba3.png");
+    background-image: url($img-ba-advert);
     height: 100%;
     position: absolute;
     width: 515px;
@@ -55,6 +55,11 @@
     @media only screen and (max-width: 430px) {
       width: 291px;
       right: -46px;
+    }
+
+    @media only screen and (max-width: 350px) {
+      width: 286px;
+      right: -74px;
     }
   }
 

@@ -22,7 +22,7 @@ export class Footer extends Component {
     return html`
         <footer class="page_footer">
             <p class="page_footer__text">
-                &copy ${new Date().getFullYear()} GTxmotorsports. All rights reserved.
+                &copy ${new Date().getFullYear()} GTxMotorsports. All rights reserved.
             </p>
             <a class="page_footer__link" id="js-to-top">${icon(
               "arrow_drop_up"

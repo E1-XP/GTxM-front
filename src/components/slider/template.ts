@@ -52,7 +52,7 @@ export default ({
                   currentSlide !== undefined &&
                   currentSlide + 1 + " / " + images.length}
             </div>
-             <p class="info__description">test description</p>
+             <p class="info__description">description</p>
              <div class="info__likes">
                 <div class="likes__count">${currentSlide !== undefined &&
                   getLikes(currentSlide)}</div>

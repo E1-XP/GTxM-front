@@ -14,7 +14,7 @@ import { Footer } from "./../footer";
 export default ({ parentRef, isMenuOpen, currentPart }: Props) => html`
     <div ${isMenuOpen && 'class="is-open"'}>
         ${run(PageBackgrounds, "pb", parentRef)}
-        <div class="l-page_container${isMenuOpen && " is-open"}">
+        <div class="l-page__container${isMenuOpen && " is-open"}">
             ${run(Header, "h", parentRef)}
             <main>
                 ${

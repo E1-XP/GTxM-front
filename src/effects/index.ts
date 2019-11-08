@@ -3,7 +3,7 @@ const vibrant: any = require("node-vibrant");
 
 import { container, types, Model } from "project-f";
 
-import { ImageData } from "./../store";
+import { ImageData, State } from "./../store";
 
 import config from "./../config";
 const { API_URL: URL } = config;
@@ -74,19 +74,22 @@ export const getImages = (part: number) =>
     });
 
 export const getMenuImages = () => {
-  const baseURL = `${URL}/static/img`;
+  const model = container.get<Model>(types.Model);
+  const baseURL = `${config.API_URL}/static/img`;
 
-  const backgrounds = [
+  const menuImages = [
     `${baseURL}/1/kr048.jpg`,
     `${baseURL}/2/bt52Mo.jpg`,
     `${baseURL}/3/917v2c222.jpg`,
     `${baseURL}/4/S1PP2.jpg`
   ];
 
-  backgrounds.forEach(url => {
+  menuImages.forEach(url => {
     const image = new Image();
     image.src = url;
   });
+
+  model.setState<State>({ menuImages });
 };
 
 export const addLike = (part: number, currentImage: number) =>
