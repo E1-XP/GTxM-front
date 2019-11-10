@@ -1,4 +1,4 @@
-import { Component } from "project-f";
+import { Component, IComponent } from "project-f";
 
 import { State } from "./../../store";
 import * as effects from "./../../effects";
@@ -13,9 +13,9 @@ export interface Props {
   isSliderRunning: boolean | undefined;
   isLightboxOpen: boolean | undefined;
   getImageList: () => string[] | string;
-  getThumbnails: () => string[] | string;
   getLikes: (idx: number) => string;
   checkIfLiked: (idx: number) => boolean;
+  parentRef: IComponent;
 }
 
 export class Slider extends Component {
@@ -86,7 +86,6 @@ export class Slider extends Component {
     this.likeBtn.addEventListener("click", this.handleLikeClick);
 
     document.addEventListener("keydown", this.enableKeySteering);
-    document.addEventListener("visibilitychange", this.handleTabChange);
     this.addThumbnailListeners();
   };
 
@@ -116,14 +115,8 @@ export class Slider extends Component {
       this.lightboxElem.removeEventListener("click", this.toggleLightbox);
 
     document.removeEventListener("keydown", this.enableKeySteering);
-    document.removeEventListener("visibilitychange", this.handleTabChange);
 
     this.removeThumbnailListeners();
-  };
-
-  handleTabChange = () => {
-    if (document.visibilityState === "hidden") this.stopSlider();
-    else setTimeout(() => this.stopStartSlider(), 500);
   };
 
   nextSlide = (e: any) => {
@@ -333,30 +326,13 @@ export class Slider extends Component {
     return Number(images[idx].likes).toString();
   };
 
-  getThumbnails = () => {
-    const { images, currentSlide } = this.model.getState<State>();
-
-    const isImgActive = (idx: number) => currentSlide === idx;
-
-    if (!images) return "";
-
-    return images.map(
-      (itm, idx) => `<li class="navigation__item${
-        isImgActive(idx) ? " active" : ""
-      }" data-idx=${idx}>
-      <span class="item__cover"></span>
-      <img src="${URL}/${itm.thumbnail}" alt="gallery thumbnail">
-    </li>`
-    );
-  };
-
   render(): HTMLTemplateElement {
     const {
       images,
       currentSlide,
       isSliderRunning,
       isLightboxOpen
-    } = this.model.getState();
+    } = this.model.getState<State>();
 
     return template({
       images,
@@ -364,9 +340,9 @@ export class Slider extends Component {
       isSliderRunning,
       isLightboxOpen,
       getImageList: this.getImageList,
-      getThumbnails: this.getThumbnails,
       getLikes: this.getLikes,
-      checkIfLiked: this.checkIfLiked
+      checkIfLiked: this.checkIfLiked,
+      parentRef: this
     });
   }
 }

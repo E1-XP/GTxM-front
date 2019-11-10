@@ -22,20 +22,24 @@
     height: 90vh;
     max-height: 30rem;
     overflow: hidden;
+    min-height: 33.12rem;
   }
 
   @media only screen and (max-width: 630px) and (max-height: 575px) {
     height: 90vh;
     width: 95%;
     max-height: 14rem;
+    min-height: initial;
   }
 
   @media only screen and (max-width: 575px) {
     transform: translateX(-50%) translateY(-50%) rotate(0deg);
     left: 50%;
     height: 95vh;
+  }
+
+  @media only screen and (max-width: 480px) {
     max-height: initial;
-    min-height: 33.12rem;
   }
 
   &__list {

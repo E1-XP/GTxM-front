@@ -1,6 +1,7 @@
 export interface ImageData {
   dir: string;
   thumbnail: string;
+  lazy: string;
   id: number;
   likes: number;
 }

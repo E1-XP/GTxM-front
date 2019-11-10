@@ -1,11 +1,11 @@
-import { Component } from "project-f";
+import { Component, html } from "project-f";
 
 import template from "./template";
 
 import { State } from "../../store";
 
 export interface Props {
-  getMenuItems: () => string[];
+  getMenuItems: () => HTMLTemplateElement[];
 }
 
 export class Navigation extends Component {
@@ -52,11 +52,13 @@ export class Navigation extends Component {
       const isActive = currentPart === i + 1;
       const getClass = () => (isActive ? "list__item--active" : "");
 
-      return `<li class="list__item ${getClass()}" data-idx=${i}>
-            <a id="js-menu-item-${i + 1}">
-              <span style="background:url(${itm})">${i + 1}</span>
-            </a>
-         </li>`;
+      return html`
+        <li class="list__item ${getClass()}" data-idx=${i}>
+          <a id="js-menu-item-${i + 1}">
+            <span style="background:url(${itm})">${i + 1}</span>
+          </a>
+        </li>
+      `;
     });
   };
 

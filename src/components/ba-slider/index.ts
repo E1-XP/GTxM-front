@@ -1,4 +1,4 @@
-import { Component } from "project-f";
+import { Component, IComponent, html } from "project-f";
 
 import template from "./template";
 import { State } from "../../store";
@@ -9,8 +9,8 @@ const { API_URL: URL } = config;
 export interface Props {
   images: any[] | undefined;
   currentSlide: number | undefined;
-  getImageList: () => string[] | string;
-  getThumbnails: () => string[] | string;
+  getImageList: () => HTMLTemplateElement;
+  parentRef: IComponent;
 }
 
 export class CompareSlider extends Component {
@@ -140,50 +140,31 @@ export class CompareSlider extends Component {
 
     if (currentSlide === undefined) throw new Error("cant find model state");
 
-    if (!images) return "";
-
-    return `<div class="ba_content" id="js-ba-before"
-    style="background:url('${URL}/${images[currentSlide].dir}')">
-        <div class="ba_content__after_container" id="js-ba-after"
-        style="background:url('${URL}/${images[currentSlide + 1].dir}')">
-            <span class="after_container__resize" id="js-ba-resize">
-            </span>
+    return html`
+      <div
+        class="ba_content"
+        id="js-ba-before"
+        style="background:url('${URL}/${images[currentSlide].dir}')"
+      >
+        <div
+          class="ba_content__after_container"
+          id="js-ba-after"
+          style="background:url('${URL}/${images[currentSlide + 1].dir}')"
+        >
+          <span class="after_container__resize" id="js-ba-resize"> </span>
         </div>
-    </div>`;
-  };
-
-  getThumbnails = () => {
-    const { images, currentSlide } = this.model.getState<State>();
-
-    if (currentSlide === undefined || !images) {
-      throw new Error("state sync error");
-    }
-
-    const isImgActive = (idx: number) => currentSlide + 1 === idx;
-
-    if (!images) return "";
-
-    return images.map(
-      (itm, idx) =>
-        idx % 2
-          ? `<li class="navigation__item${
-              isImgActive(idx) ? " active" : ""
-            }" data-idx=${idx}>
-      <img src="${URL}/${itm.thumbnail}" alt="gallery thumbnail">
-      <span class="item__cover"></span>
-    </li>`
-          : ""
-    );
+      </div>
+    `;
   };
 
   render(): HTMLTemplateElement {
-    const { images, currentSlide } = this.model.getState();
+    const { images, currentSlide } = this.model.getState<State>();
 
     return template({
       images,
       currentSlide,
       getImageList: this.getImageList,
-      getThumbnails: this.getThumbnails
+      parentRef: this
     });
   }
 }

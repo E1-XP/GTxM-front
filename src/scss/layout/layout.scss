@@ -2,6 +2,7 @@
   overflow: hidden;
   position: relative;
   transition: all 300ms ease-in-out;
+  background-color: $darkGray;
 
   > div {
     &.is-open {
@@ -19,7 +20,7 @@
   position: relative;
   transition: all 300ms ease-in-out;
   transform: scale(1) rotateY(0deg) translateX(0) translateZ(0);
-  will-change: transfrom;
+  will-change: transform;
   backface-visibility: hidden;
 
   @media only screen and (max-width: 900px) {

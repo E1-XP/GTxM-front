@@ -28,7 +28,7 @@ export const getImages = (part: number) =>
       images.sort((a, b) => a.id - b.id).map((image, i) => {
         const img = new Image();
 
-        const handleLoad = (e: any) => {
+        const handleLoad = () => {
           vibrant
             .from(img.src)
             .getPalette()
@@ -36,9 +36,7 @@ export const getImages = (part: number) =>
               extractedColors[i] = result;
 
               counter += 1;
-              const loadStatus = Math.floor(
-                (counter / (images.length * 2)) * 100
-              );
+              const loadStatus = Math.floor((counter / images.length) * 100);
 
               if (loadStatus === 100) {
                 model.setState({
@@ -55,19 +53,7 @@ export const getImages = (part: number) =>
             });
         };
 
-        const handleThumbnail = (e: any) => {
-          const thumb = new Image();
-
-          thumb.addEventListener("load", handleLoad);
-          thumb.src = `${URL}/${image.thumbnail}`;
-
-          counter += 1;
-          const loadStatus = Math.floor((counter / (images.length * 2)) * 100);
-
-          model.setState({ loadStatus });
-        };
-
-        img.addEventListener("load", handleThumbnail);
+        img.addEventListener("load", handleLoad);
 
         img.src = `${URL}/${image.dir}`;
       });
