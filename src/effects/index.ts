@@ -3,7 +3,7 @@ const vibrant: any = require("node-vibrant");
 
 import { container, types, Model } from "project-f";
 
-import { ImageData } from "./../store";
+import { ImageData, State } from "./../store";
 
 import config from "./../config";
 const { API_URL: URL } = config;
@@ -28,7 +28,7 @@ export const getImages = (part: number) =>
       images.sort((a, b) => a.id - b.id).map((image, i) => {
         const img = new Image();
 
-        const handleLoad = (e: any) => {
+        const handleLoad = () => {
           vibrant
             .from(img.src)
             .getPalette()
@@ -36,9 +36,7 @@ export const getImages = (part: number) =>
               extractedColors[i] = result;
 
               counter += 1;
-              const loadStatus = Math.floor(
-                (counter / (images.length * 2)) * 100
-              );
+              const loadStatus = Math.floor((counter / images.length) * 100);
 
               if (loadStatus === 100) {
                 model.setState({
@@ -55,42 +53,29 @@ export const getImages = (part: number) =>
             });
         };
 
-        const handleThumbnail = (e: any) => {
-          const thumb = new Image();
-
-          thumb.addEventListener("load", handleLoad);
-
-          thumb.src = `${URL}/${image.thumbnail}`;
-
-          counter += 1;
-          const loadStatus = Math.floor((counter / (images.length * 2)) * 100);
-
-          model.setState({ loadStatus });
-        };
-
-        img.addEventListener("load", handleThumbnail);
+        img.addEventListener("load", handleLoad);
 
         img.src = `${URL}/${image.dir}`;
       });
     });
 
 export const getMenuImages = () => {
-  const URL = "https://boiling-citadel-14104.herokuapp.com";
+  const model = container.get<Model>(types.Model);
+  const baseURL = `${config.API_URL}/static/img`;
 
-  const backgrounds = [
-    `${URL}/static/img/1/kr048.jpg`,
-
-    `${URL}/static/img/2/bt52Mo.jpg`,
-
-    `${URL}/static/img/3/917v2c222.jpg`,
-
-    `${URL}/static/img/4/S1PP2.jpg`
+  const menuImages = [
+    `${baseURL}/1/kr048.jpg`,
+    `${baseURL}/2/bt52Mo.jpg`,
+    `${baseURL}/3/917v2c222.jpg`,
+    `${baseURL}/4/S1PP2.jpg`
   ];
 
-  backgrounds.forEach(url => {
+  menuImages.forEach(url => {
     const image = new Image();
     image.src = url;
   });
+
+  model.setState<State>({ menuImages });
 };
 
 export const addLike = (part: number, currentImage: number) =>

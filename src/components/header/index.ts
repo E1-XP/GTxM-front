@@ -1,6 +1,9 @@
 import { Component } from "project-f";
+import throttle from "lodash.throttle";
 
 import template from "./template";
+
+import { State } from "../../store";
 
 export interface Props {
   getPartName: () => string;
@@ -14,6 +17,8 @@ export class Header extends Component {
   baSectionBtn: HTMLElement | null = null;
   headerAnchor: HTMLElement | null = null;
 
+  isResizedBelow340px = window.innerWidth < 340;
+
   onMount = () => {
     this.menuBtn = document.getElementById("js-change-section");
     this.baSectionBtn = document.getElementById("js-before-after");
@@ -25,6 +30,8 @@ export class Header extends Component {
       this.baSectionBtn.addEventListener("click", this.handleBaSectionClick);
     this.headerAnchor &&
       this.headerAnchor.addEventListener("click", this.handleHeaderLogoClick);
+
+    window.addEventListener("resize", this.onResize);
   };
 
   onUnmount = () => {
@@ -37,14 +44,25 @@ export class Header extends Component {
         "click",
         this.handleHeaderLogoClick
       );
+
+    window.removeEventListener("resize", this.onResize);
   };
+
+  onResize = throttle(() => {
+    const isSmallEnough = window.innerWidth < 340;
+
+    if (isSmallEnough) {
+      this.isResizedBelow340px = true;
+      this.forceRerender();
+    } else if (this.isResizedBelow340px) {
+      this.isResizedBelow340px = false;
+      this.forceRerender();
+    }
+  }, 1000 / 60);
 
   handleMenuClick = (e: any) => {
     const { isMenuOpen } = this.model.getState();
     this.model.setState({ isMenuOpen: !isMenuOpen });
-
-    const cont: any = document.querySelector(".l-page_container");
-    if (cont) cont.style.maxHeight = "100vh";
   };
 
   handleHeaderLogoClick = () => {
@@ -58,15 +76,23 @@ export class Header extends Component {
   };
 
   getPartName = () => {
-    const { currentPart } = this.model.getState();
+    const { currentPart } = this.model.getState<State>();
     const partNames = ["One", "Two", "Three", "Four"];
 
-    return `Part ${currentPart && partNames[currentPart - 1]}`;
+    const isSmallEnough = window.innerWidth < 340;
+    const partText = isSmallEnough
+      ? currentPart
+      : currentPart && partNames[currentPart - 1];
+
+    return `Part ${partText}`;
   };
 
   render() {
     const { currentPart } = this.model.getState();
 
-    return template({ currentPart, getPartName: this.getPartName });
+    return template({
+      currentPart,
+      getPartName: this.getPartName
+    });
   }
 }

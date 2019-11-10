@@ -38,7 +38,7 @@ export class Page extends Component {
   handlePageClick = () => {
     this.model.setState({ isMenuOpen: false });
 
-    const cont: any = document.querySelector(".l-page_container")!;
+    const cont: any = document.querySelector(".l-page__container")!;
     setTimeout(() => (cont.style.maxHeight = "none"), 900);
   };
 

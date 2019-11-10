@@ -1,10 +1,15 @@
 @import "../../node_modules/node.normalize.scss/_normalize.scss";
+
 @import "./base/reset.scss";
 @import "./base/typography.scss";
+
 @import "./helpers/variables.scss";
 @import "./helpers/helpers.scss";
+
 @import "./layout/layout.scss";
+
 @import "./base/global.scss";
+
 @import "../components/shared/style.scss";
 @import "../components/preloader/style.scss";
 @import "../components/navigation/style.scss";

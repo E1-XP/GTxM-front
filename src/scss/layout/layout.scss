@@ -1,8 +1,9 @@
 .container {
   overflow: hidden;
-  background-color: $lightGray;
   position: relative;
   transition: all 300ms ease-in-out;
+  background-color: $darkGray;
+
   > div {
     &.is-open {
       overflow: hidden;
@@ -11,34 +12,46 @@
   }
 }
 
-.l-page_container {
+.l-page__container {
   max-width: 1200px;
   width: 90%;
   margin: 1rem auto;
   z-index: 5;
   position: relative;
   transition: all 300ms ease-in-out;
+  transform: scale(1) rotateY(0deg) translateX(0) translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+
   @media only screen and (max-width: 900px) {
     width: 95%;
   }
+
   &.is-open {
     min-height: 45rem;
     overflow: hidden;
-    transform: scale(0.8) rotateY(46deg) translateX(-18vw);
+    transform: scale(0.8) rotateY(46deg) translateX(-18vw) translateZ(0);
     border: 6px solid rgba(255, 255, 255, 0.2);
     padding: 1.5rem;
     border-radius: 10px;
+    max-height: 100vh;
+    margin: 0 auto;
+
     @media only screen and (max-width: 900px) {
-      transform: scale(0.8) rotateY(54deg) translateX(-25vw);
+      transform: scale(0.8) rotateY(54deg) translateX(-25vw) translateZ(0);
     }
+
     @media only screen and (max-width: 750px) {
-      transform: scale(0.8) rotateY(54deg) translateX(-28vw);
+      transform: scale(0.8) rotateY(54deg) translateX(-28vw) translateZ(0);
     }
+
     @media only screen and (max-width: 670px) {
-      transform: scale(0.8) rotateY(59deg) translateX(-37vw);
+      transform: scale(0.8) rotateY(52deg) translateX(-31vw) translateZ(0);
     }
-    @media only screen and (max-width: 575px) {
-      transform: scale(0) rotateY(59deg) translateX(-41vw);
+
+    @media only screen and (max-width: 630px) {
+      transform: scale(0) rotateY(59deg) translateX(-41vw) translateZ(0);
+      min-height: initial;
     }
   }
 }
