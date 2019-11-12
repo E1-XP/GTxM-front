@@ -12,7 +12,7 @@ interface Response {
   images: ImageData[];
 }
 
-interface IuData {
+export interface ImgLikesData {
   [key: string]: boolean[];
 }
 
@@ -25,38 +25,40 @@ export const getImages = (part: number) =>
 
       let counter = 0;
 
-      images.sort((a, b) => a.id - b.id).map((image, i) => {
-        const img = new Image();
+      images
+        .sort((a, b) => a.id - b.id)
+        .map((image, i) => {
+          const img = new Image();
 
-        const handleLoad = () => {
-          vibrant
-            .from(img.src)
-            .getPalette()
-            .then((result: any) => {
-              extractedColors[i] = result;
+          const handleLoad = () => {
+            vibrant
+              .from(img.src)
+              .getPalette()
+              .then((result: any) => {
+                extractedColors[i] = result;
 
-              counter += 1;
-              const loadStatus = Math.floor((counter / images.length) * 100);
+                counter += 1;
+                const loadStatus = Math.floor((counter / images.length) * 100);
 
-              if (loadStatus === 100) {
-                model.setState({
-                  images,
-                  extractedColors,
-                  isLoading: false,
-                  loadStatus: 0
-                });
+                if (loadStatus === 100) {
+                  model.setState({
+                    images,
+                    extractedColors,
+                    isLoading: false,
+                    loadStatus: 0
+                  });
 
-                return;
-              }
+                  return;
+                }
 
-              model.setState({ loadStatus });
-            });
-        };
+                model.setState({ loadStatus });
+              });
+          };
 
-        img.addEventListener("load", handleLoad);
+          img.addEventListener("load", handleLoad);
 
-        img.src = `${URL}/${image.dir}`;
-      });
+          img.src = `${URL}/${image.dir}`;
+        });
     });
 
 export const getMenuImages = () => {
@@ -92,7 +94,7 @@ export const addLike = (part: number, currentImage: number) =>
 
       const uData = localStorage.getItem("data");
       if (uData) {
-        const parsedData: IuData = JSON.parse(uData);
+        const parsedData: ImgLikesData = JSON.parse(uData);
 
         parsedData[part][currentImage] = true;
         localStorage.setItem("data", JSON.stringify(parsedData));
@@ -105,7 +107,7 @@ export const populateLocalStorage = () => {
   const alreadyExist = localStorage.getItem("data");
   if (alreadyExist) return;
 
-  const uData: IuData = {};
+  const uData: ImgLikesData = {};
 
   Array(4)
     .fill(null)

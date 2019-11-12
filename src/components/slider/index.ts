@@ -1,7 +1,8 @@
 import { Component, IComponent } from "project-f";
 
 import { State } from "./../../store";
-import * as effects from "./../../effects";
+import { addLike, ImgLikesData } from "./../../effects";
+
 import template from "./template";
 
 import config from "./../../config";
@@ -45,45 +46,35 @@ export class Slider extends Component {
   };
 
   onUnmount = () => {
-    this.detachListeners();
     this.stopSlider();
+    this.detachListeners();
   };
 
   onUpdate = () => {
-    const { isLightboxOpen, isSliderRunning } = this.model.getState();
+    const { isLightboxOpen, isSliderRunning } = this.model.getState<State>();
 
     if (isLightboxOpen) {
-      this.lightboxElem &&
-        this.lightboxElem.addEventListener("click", this.toggleLightbox);
+      this.lightboxElem?.addEventListener("click", this.toggleLightbox);
     } else {
-      this.lightboxElem &&
-        this.lightboxElem.removeEventListener("click", this.toggleLightbox);
+      this.lightboxElem?.removeEventListener("click", this.toggleLightbox);
     }
 
-    if (isSliderRunning && this.progressBar) {
-      setTimeout(() => this.progressBar!.classList.add("is-open"), 500);
+    if (isSliderRunning) {
+      this.progressBar?.classList.remove("is-open");
+      void this.progressBar?.offsetWidth;
+      this.progressBar?.classList.add("is-open");
+    } else {
+      this.progressBar?.classList.remove("is-open");
     }
   };
 
   appendListeners = () => {
-    if (
-      !this.backBtn ||
-      !this.stopStartBtn ||
-      !this.nextBtn ||
-      !this.likeBtn ||
-      !this.toggleLightboxBtn ||
-      !this.getFullSizeBtn ||
-      !this.getFullSizeBtn
-    ) {
-      throw new Error("DOM elements not found.");
-    }
-
-    this.backBtn.addEventListener("click", this.prevSlide);
-    this.stopStartBtn.addEventListener("click", this.stopStartSlider);
-    this.toggleLightboxBtn.addEventListener("click", this.toggleLightbox);
-    this.getFullSizeBtn.addEventListener("click", this.getFullImage);
-    this.nextBtn.addEventListener("click", this.nextSlide);
-    this.likeBtn.addEventListener("click", this.handleLikeClick);
+    this.backBtn?.addEventListener("click", this.prevSlide);
+    this.stopStartBtn?.addEventListener("click", this.stopStartSlider);
+    this.toggleLightboxBtn?.addEventListener("click", this.toggleLightbox);
+    this.getFullSizeBtn?.addEventListener("click", this.getFullImage);
+    this.nextBtn?.addEventListener("click", this.nextSlide);
+    this.likeBtn?.addEventListener("click", this.handleLikeClick);
 
     document.addEventListener("keydown", this.enableKeySteering);
     this.addThumbnailListeners();
@@ -92,27 +83,14 @@ export class Slider extends Component {
   detachListeners = () => {
     const { isLightboxOpen } = this.model.getState();
 
-    if (
-      !this.backBtn ||
-      !this.stopStartBtn ||
-      !this.nextBtn ||
-      !this.likeBtn ||
-      !this.toggleLightboxBtn ||
-      !this.getFullSizeBtn ||
-      !this.getFullSizeBtn
-    ) {
-      throw new Error("DOM elements not found.");
-    }
-
-    this.backBtn.removeEventListener("click", this.prevSlide);
-    this.stopStartBtn.removeEventListener("click", this.stopStartSlider);
-    this.toggleLightboxBtn.removeEventListener("click", this.toggleLightbox);
-    this.getFullSizeBtn.removeEventListener("click", this.getFullImage);
-    this.nextBtn.removeEventListener("click", this.nextSlide);
-    this.likeBtn.removeEventListener("click", this.handleLikeClick);
+    this.backBtn?.removeEventListener("click", this.prevSlide);
+    this.stopStartBtn?.removeEventListener("click", this.stopStartSlider);
+    this.toggleLightboxBtn?.removeEventListener("click", this.toggleLightbox);
+    this.getFullSizeBtn?.removeEventListener("click", this.getFullImage);
+    this.nextBtn?.removeEventListener("click", this.nextSlide);
+    this.likeBtn?.removeEventListener("click", this.handleLikeClick);
     isLightboxOpen &&
-      this.lightboxElem &&
-      this.lightboxElem.removeEventListener("click", this.toggleLightbox);
+      this.lightboxElem?.removeEventListener("click", this.toggleLightbox);
 
     document.removeEventListener("keydown", this.enableKeySteering);
 
@@ -127,19 +105,13 @@ export class Slider extends Component {
     }
     const onLastSlide = currentSlide >= images.length - 1;
 
-    this.model.setState({
-      currentSlide: onLastSlide ? 0 : currentSlide + 1
-    });
-
-    if (isSliderRunning && this.progressBar) {
-      if (this.progressBar.classList.contains("is-open")) {
-        this.progressBar.classList.remove("is-open");
-      }
-    }
-
     if (e.type !== "click" || (e.screenX && e.screenY)) {
       this.stopSlider();
     }
+
+    this.model.setState({
+      currentSlide: onLastSlide ? 0 : currentSlide + 1
+    });
   };
 
   prevSlide = () => {
@@ -150,41 +122,38 @@ export class Slider extends Component {
     }
     const inFirstSlide = currentSlide === 0;
 
-    this.model.setState({
-      isSliderRunning: false,
-      currentSlide: inFirstSlide ? images.length - 1 : currentSlide + -1
-    });
-
     if ((<any>window).sliderInterval) {
       clearInterval((<any>window).sliderInterval);
       (<any>window).sliderInterval = 0;
     }
-    this.progressBar!.classList.remove("is-open");
+
+    this.model.setState({
+      isSliderRunning: false,
+      currentSlide: inFirstSlide ? images.length - 1 : currentSlide + -1
+    });
   };
 
   stopStartSlider = () => {
     const { isSliderRunning, slideInterval } = this.model.getState();
     const handleClick = () => this.nextBtn && this.nextBtn.click();
 
-    this.model.setState({ isSliderRunning: !isSliderRunning });
-
     if ((<any>window).sliderInterval) {
       clearInterval((<any>window).sliderInterval);
       (<any>window).sliderInterval = 0;
     } else {
       (<any>window).sliderInterval = setInterval(handleClick, slideInterval);
-      this.progressBar!.classList.add("is-open--start");
     }
+
+    this.model.setState({ isSliderRunning: !isSliderRunning });
   };
 
   stopSlider = () => {
-    this.model.setState({ isSliderRunning: false });
-
     if ((<any>window).sliderInterval) {
       clearInterval((<any>window).sliderInterval);
       (<any>window).sliderInterval = 0;
     }
-    this.progressBar!.classList.remove("is-open");
+
+    this.model.setState({ isSliderRunning: false });
   };
 
   enableKeySteering = (e: KeyboardEvent) => {
@@ -216,7 +185,7 @@ export class Slider extends Component {
   };
 
   getClassNames = (length: number, idx: number) => {
-    const { currentSlide } = this.model.getState();
+    const { currentSlide } = this.model.getState<State>();
     const currElem: any = document.querySelector(
       ".image_slider .content__list .active"
     );
@@ -287,41 +256,35 @@ export class Slider extends Component {
   handleThumbnailClick = (e: any) => {
     const currentSlide = Number(e.target.closest("li").dataset.idx);
 
-    this.model.setState({ currentSlide, isSliderRunning: false });
-
     if ((<any>window).sliderInterval) {
       clearInterval((<any>window).sliderInterval);
       (<any>window).sliderInterval = 0;
     }
-    this.progressBar!.classList.remove("is-open");
+
+    this.model.setState({ currentSlide, isSliderRunning: false });
   };
 
   handleLikeClick = () => {
-    const { currentPart, currentSlide } = this.model.getState();
+    const { currentPart, currentSlide } = this.model.getState<State>();
 
-    if (currentPart === undefined || currentSlide === undefined) {
-      throw new Error(`can't connect state`);
-    }
-
-    if (!this.checkIfLiked(currentSlide)) {
-      effects.addLike(currentPart, currentSlide);
+    if (!this.checkIfLiked(currentSlide!)) {
+      addLike(currentPart!, currentSlide!);
     }
   };
 
   checkIfLiked = (slideNum: number) => {
-    const { currentPart } = this.model.getState();
-    const data = localStorage.getItem("data");
+    const { currentPart } = this.model.getState<State>();
 
-    if (currentPart === undefined || !data) {
-      throw new Error("preloader probably not working");
-    }
+    const stringified = localStorage.getItem("data");
+    if (!stringified) return false;
 
-    return JSON.parse(data)[currentPart][slideNum];
+    const data: ImgLikesData = JSON.parse(stringified);
+    return data[currentPart!][slideNum];
   };
 
   getLikes = (idx: number) => {
     const { images } = this.model.getState();
-    if (!images) throw new Error("check slider for state error");
+    if (!images) return "0";
 
     return Number(images[idx].likes).toString();
   };
