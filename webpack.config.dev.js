@@ -2,7 +2,7 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const uglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
-  entry: "./src/index.ts",
+  entry: ["./src/index.ts", "./src/scss/main.scss"],
   output: {
     path: __dirname + "/public",
     publicPath: "/",
@@ -36,24 +36,10 @@ module.exports = {
   },
   plugins: [
     new htmlWebpackPlugin({
-      template: "./public/index.html",
+      template: "./src/index.html",
       filename: "./index.html"
     })
   ],
-  optimization: {
-    minimizer: [
-      new uglifyJSPlugin({
-        uglifyOptions: {
-          compress: {
-            drop_console: true
-          },
-          output: {
-            comments: false
-          }
-        }
-      })
-    ]
-  },
   devServer: {
     contentBase: "./public"
   }
