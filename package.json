@@ -15,10 +15,11 @@
     "lodash.throttle": "^4.1.1",
     "node-vibrant": "^3.0.0",
     "node.normalize.scss": "^3.0.3",
-    "project-f": "git://github.com/E1-XP/project-f.git#dev",
+    "project-f": "git://github.com/E1-XP/project-f.git",
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.throttle": "^4.1.6",
     "@types/node": "^10.17.4",
     "autoprefixer": "^9.7.1",
@@ -37,6 +38,7 @@
     "resolve-url-loader": "^3.0.0",
     "sass-loader": "^7.3.1",
     "source-map-loader": "^0.2.4",
+    "style-loader": "^1.0.0",
     "tslint": "^5.20.1",
     "tslint-config-airbnb": "^5.11.2",
     "tslint-config-prettier": "^1.18.0",
