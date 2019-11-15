@@ -18,10 +18,12 @@
   margin: 1rem auto;
   z-index: 5;
   position: relative;
-  transition: padding 300ms ease-in-out, transform 300ms ease-in-out 16.7ms;
+  transition: padding 300ms ease-in-out, transform 300ms ease-in-out 16.7ms,
+    opacity 300ms ease-in-out 16.7ms;
   transform: scale(1) rotateY(0deg) translateX(0) translateZ(0);
   will-change: transform;
   backface-visibility: hidden;
+  opacity: 1;
 
   @media only screen and (max-width: 900px) {
     width: 95%;
@@ -50,7 +52,8 @@
     }
 
     @media only screen and (max-width: 630px) {
-      transform: scale(0) rotateY(59deg) translateX(-41vw) translateZ(0);
+      transform: scale(0.8) rotateY(59deg) translateX(-41vw) translateZ(0);
+      opacity: 0;
       min-height: initial;
     }
   }

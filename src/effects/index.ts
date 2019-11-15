@@ -1,7 +1,7 @@
 import "whatwg-fetch";
 const vibrant: any = require("node-vibrant");
 
-import { container, types, Model } from "project-f";
+import { model, types, Model } from "project-f";
 
 import { ImageData, State } from "./../store";
 
@@ -20,7 +20,6 @@ export const getImages = (part: number) =>
   fetch(`${URL}/static/img/${part}`)
     .then((resp: any) => resp.json())
     .then(({ images }: Response) => {
-      const model = container.get<Model>(types.Model);
       const extractedColors: any[] = [];
 
       let counter = 0;
@@ -41,17 +40,17 @@ export const getImages = (part: number) =>
                 const loadStatus = Math.floor((counter / images.length) * 100);
 
                 if (loadStatus === 100) {
-                  model.setState({
+                  model.setState<State>(() => ({
                     images,
                     extractedColors,
                     isLoading: false,
                     loadStatus: 0
-                  });
+                  }));
 
                   return;
                 }
 
-                model.setState({ loadStatus });
+                model.setState<State>(() => ({ loadStatus }));
               });
           };
 
@@ -62,7 +61,6 @@ export const getImages = (part: number) =>
     });
 
 export const getMenuImages = () => {
-  const model = container.get<Model>(types.Model);
   const baseURL = `${config.API_URL}/static/img`;
 
   const menuImages = [
@@ -77,7 +75,7 @@ export const getMenuImages = () => {
     image.src = url;
   });
 
-  model.setState<State>({ menuImages });
+  model.setState<State>(() => ({ menuImages }));
 };
 
 export const addLike = (part: number, currentImage: number) =>
@@ -86,7 +84,6 @@ export const addLike = (part: number, currentImage: number) =>
   })
     .then((resp: any) => resp.json())
     .then((data: any) => {
-      const model = container.get<Model>(types.Model);
       const { images } = model.getState();
 
       const updatedImages = images.slice();
@@ -100,7 +97,7 @@ export const addLike = (part: number, currentImage: number) =>
         localStorage.setItem("data", JSON.stringify(parsedData));
       }
 
-      model.setState({ images: updatedImages });
+      model.setState<State>(() => ({ images: updatedImages }));
     });
 
 export const populateLocalStorage = () => {

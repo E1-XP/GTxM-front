@@ -5,4 +5,6 @@ import routes from "./routes";
 
 import { App } from "./app";
 
-initApp(<any>App, document.getElementById("root")!, routes, initialState);
+const rootNode = document.getElementById("root");
+
+initApp(<any>App, routes, initialState).renderToDOM(rootNode!);
