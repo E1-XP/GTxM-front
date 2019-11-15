@@ -19,7 +19,7 @@ export class Header extends Component {
 
   isResizedBelow340px = window.innerWidth < 340;
 
-  onMount = () => {
+  onMount() {
     this.menuBtn = document.getElementById("js-change-section");
     this.baSectionBtn = document.getElementById("js-before-after");
     this.headerAnchor = document.getElementById("js-header-logo");
@@ -32,9 +32,9 @@ export class Header extends Component {
       this.headerAnchor.addEventListener("click", this.handleHeaderLogoClick);
 
     window.addEventListener("resize", this.onResize);
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     this.menuBtn &&
       this.menuBtn.removeEventListener("click", this.handleMenuClick);
     this.baSectionBtn &&
@@ -46,7 +46,7 @@ export class Header extends Component {
       );
 
     window.removeEventListener("resize", this.onResize);
-  };
+  }
 
   onResize = throttle(() => {
     const isSmallEnough = window.innerWidth < 340;
@@ -62,7 +62,7 @@ export class Header extends Component {
 
   handleMenuClick = (e: any) => {
     const { isMenuOpen } = this.model.getState();
-    this.model.setState({ isMenuOpen: !isMenuOpen });
+    this.model.setState(() => ({ isMenuOpen: !isMenuOpen }));
   };
 
   handleHeaderLogoClick = () => {

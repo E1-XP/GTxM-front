@@ -80,8 +80,5 @@ module.exports = {
         cssProcessor: cleanCSS
       })
     ]
-  },
-  devServer: {
-    contentBase: "./public"
   }
 };

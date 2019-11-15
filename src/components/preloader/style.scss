@@ -7,7 +7,7 @@
   align-items: center;
   justify-content: center;
 
-  .page_preloader__counter {
+  &__counter {
     background-color: $lightGray;
     color: $medGray;
     font-size: 10rem;
@@ -20,5 +20,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  &__content {
+    color: $lightGray;
+    font-size: 1.6rem;
+    font-family: "Paytone One", sans-serif;
   }
 }

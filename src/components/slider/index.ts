@@ -31,7 +31,7 @@ export class Slider extends Component {
   likeBtn: HTMLElement | null = null;
   progressBar: HTMLElement | null = null;
 
-  onMount = () => {
+  onMount() {
     this.backBtn = document.getElementById("js-slider-back");
     this.stopStartBtn = document.getElementById("js-slider-stop");
     this.getFullSizeBtn = document.getElementById("js-slider-getimg");
@@ -43,15 +43,15 @@ export class Slider extends Component {
 
     this.appendListeners();
     this.stopStartSlider();
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     this.stopSlider();
     this.detachListeners();
-  };
+  }
 
-  onUpdate = () => {
-    const { isLightboxOpen, isSliderRunning } = this.model.getState<State>();
+  onUpdate<State>(prevS: any, state: any) {
+    const { isLightboxOpen, isSliderRunning, currentSlide } = state;
 
     if (isLightboxOpen) {
       this.lightboxElem?.addEventListener("click", this.toggleLightbox);
@@ -59,14 +59,17 @@ export class Slider extends Component {
       this.lightboxElem?.removeEventListener("click", this.toggleLightbox);
     }
 
+    const shouldTriggerReflow = currentSlide !== prevS.currentSlide;
+
     if (isSliderRunning) {
       this.progressBar?.classList.remove("is-open");
-      void this.progressBar?.offsetWidth;
+      shouldTriggerReflow && void this.progressBar?.offsetWidth;
+
       this.progressBar?.classList.add("is-open");
     } else {
       this.progressBar?.classList.remove("is-open");
     }
-  };
+  }
 
   appendListeners = () => {
     this.backBtn?.addEventListener("click", this.prevSlide);
@@ -109,9 +112,9 @@ export class Slider extends Component {
       this.stopSlider();
     }
 
-    this.model.setState({
+    this.model.setState(() => ({
       currentSlide: onLastSlide ? 0 : currentSlide + 1
-    });
+    }));
   };
 
   prevSlide = () => {
@@ -127,10 +130,10 @@ export class Slider extends Component {
       (<any>window).sliderInterval = 0;
     }
 
-    this.model.setState({
+    this.model.setState(() => ({
       isSliderRunning: false,
       currentSlide: inFirstSlide ? images.length - 1 : currentSlide + -1
-    });
+    }));
   };
 
   stopStartSlider = () => {
@@ -144,7 +147,9 @@ export class Slider extends Component {
       (<any>window).sliderInterval = setInterval(handleClick, slideInterval);
     }
 
-    this.model.setState({ isSliderRunning: !isSliderRunning });
+    this.model.setState<State>(state => ({
+      isSliderRunning: !state.isSliderRunning
+    }));
   };
 
   stopSlider = () => {
@@ -153,7 +158,7 @@ export class Slider extends Component {
       (<any>window).sliderInterval = 0;
     }
 
-    this.model.setState({ isSliderRunning: false });
+    this.model.setState(() => ({ isSliderRunning: false }));
   };
 
   enableKeySteering = (e: KeyboardEvent) => {
@@ -181,7 +186,7 @@ export class Slider extends Component {
 
   toggleLightbox = () => {
     const { isLightboxOpen } = this.model.getState();
-    this.model.setState({ isLightboxOpen: !isLightboxOpen });
+    this.model.setState(() => ({ isLightboxOpen: !isLightboxOpen }));
   };
 
   getClassNames = (length: number, idx: number) => {
@@ -261,7 +266,7 @@ export class Slider extends Component {
       (<any>window).sliderInterval = 0;
     }
 
-    this.model.setState({ currentSlide, isSliderRunning: false });
+    this.model.setState(() => ({ currentSlide, isSliderRunning: false }));
   };
 
   handleLikeClick = () => {

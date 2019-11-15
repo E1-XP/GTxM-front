@@ -5,15 +5,17 @@ import { button } from "./../shared";
 export interface Props {}
 
 export class BeforeAfterAd extends Component {
-  onMount = () => {
+  props = [];
+
+  onMount() {
     const btn = document.getElementById("js-ba-ad");
     btn && btn.addEventListener("click", this.handleClick);
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     const btn = document.getElementById("js-ba-ad");
     btn && btn.removeEventListener("click", this.handleClick);
-  };
+  }
 
   handleClick = () => {
     this.router.routeTo("/ba");
@@ -22,11 +24,12 @@ export class BeforeAfterAd extends Component {
   render() {
     return html`
       <aside class="ba_advert">
-          <h2 class="ba_advert__heading">
-              Let's go backwards and see what it takes to produce image like this.
-          </h2>
-         ${button("Enter section!", "big", { id: "js-ba-ad" })}
-          <div class="ba_advert__background"></div>
-      </aside>`;
+        <h2 class="ba_advert__heading">
+          Let's go backwards and see what it takes to produce image like this.
+        </h2>
+        ${button("Enter section!", "big", { id: "js-ba-ad" })}
+        <div class="ba_advert__background"></div>
+      </aside>
+    `;
   }
 }

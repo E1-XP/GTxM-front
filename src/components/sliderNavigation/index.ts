@@ -6,11 +6,12 @@ import config from "../../config";
 const { API_URL: URL } = config;
 
 export class SliderNavigation extends Component {
+  props = ["images", "currentSlide", "currentPart"];
   images: HTMLImageElement[] = [];
 
-  onMount = () => {
+  onMount() {
     this.observeThumbnails();
-  };
+  }
 
   observeThumbnails() {
     const images = document.querySelectorAll(".image_slider__navigation img");

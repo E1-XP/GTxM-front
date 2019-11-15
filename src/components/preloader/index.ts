@@ -11,21 +11,21 @@ export interface Props {
 export class Preloader extends Component {
   props = ["loadStatus", "currentPart"];
 
-  onMount = () => {
+  onMount() {
     const { currentPart } = this.model.getState();
 
     currentPart !== undefined && effects.getImages(currentPart);
 
     effects.populateLocalStorage();
-  };
+  }
 
-  getValue() {
+  computeText() {
     const { loadStatus } = <State>this.model.getState();
     return loadStatus < 10 ? `0${loadStatus}` : `${loadStatus}`;
   }
 
   render() {
-    const value = this.getValue();
+    const value = this.computeText();
 
     return template({ value });
   }
