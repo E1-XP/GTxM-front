@@ -20,7 +20,7 @@ export class CompareSlider extends Component {
   afterDiv: HTMLElement | null = null;
   beforeDiv: HTMLElement | null = null;
 
-  onMount = () => {
+  onMount() {
     this.resizerBtn = document.getElementById("js-ba-resize");
     this.beforeDiv = document.getElementById("js-ba-before");
     this.afterDiv = document.getElementById("js-ba-after");
@@ -33,9 +33,9 @@ export class CompareSlider extends Component {
       );
 
     this.addThumbnailListeners();
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     this.removeThumbnailListeners();
 
     this.resizerBtn &&
@@ -44,7 +44,7 @@ export class CompareSlider extends Component {
           this.resizerBtn &&
           this.resizerBtn.removeEventListener(evt, this.onMouseDown)
       );
-  };
+  }
 
   onMouseDown = (e: any) => {
     const throttle = (fn: any, delay: number) => {
@@ -132,7 +132,7 @@ export class CompareSlider extends Component {
   handleThumbnailClick = (e: any) => {
     const currentSlide = Number(e.target.closest("li").dataset.idx) - 1;
 
-    this.model.setState({ currentSlide });
+    this.model.setState(() => ({ currentSlide }));
   };
 
   getImageList = () => {

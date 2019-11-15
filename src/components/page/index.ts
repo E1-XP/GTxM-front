@@ -15,18 +15,18 @@ export class Page extends Component {
 
   pageBtn: HTMLElement | null = null;
 
-  onMount = () => {
+  onMount() {
     effects.getMenuImages();
-  };
+  }
 
-  onUpdate = () => {
+  onUpdate() {
     this.attachHandlers();
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     this.pageBtn &&
       this.pageBtn.removeEventListener("click", this.handlePageClick);
-  };
+  }
 
   attachHandlers = () => {
     this.pageBtn = document.getElementById("js-page-btn");
@@ -36,7 +36,7 @@ export class Page extends Component {
   };
 
   handlePageClick = () => {
-    this.model.setState({ isMenuOpen: false });
+    this.model.setState(() => ({ isMenuOpen: false }));
   };
 
   render(): HTMLTemplateElement {

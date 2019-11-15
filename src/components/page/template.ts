@@ -12,24 +12,21 @@ import { SocialLinks } from "./../social-links";
 import { Footer } from "./../footer";
 
 export default ({ parentRef, isMenuOpen, currentPart }: Props) => html`
-    <div ${isMenuOpen && 'class="is-open"'}>
-        ${run(PageBackgrounds, "pb", parentRef)}
-        <div class="l-page__container${isMenuOpen && " is-open"}">
-            ${run(Header, "h", parentRef)}
-            <main>
-                ${
-                  currentPart && currentPart !== 5
-                    ? run(Slider, "s", parentRef)
-                    : run(CompareSlider, "cs", parentRef)
-                }
-                ${currentPart &&
-                  currentPart !== 5 &&
-                  run(BeforeAfterAd, "baa", parentRef)}
-            </main>
-            ${run(SocialLinks, "sl", parentRef)}
-            ${run(Footer, "f", parentRef)}
-            ${isMenuOpen && '<div class="page__button" id="js-page-btn"></div>'}
-        </div>
-        ${isMenuOpen && run(Navigation, "n", parentRef)}
+  <div ${isMenuOpen ? 'class="is-open"' : ""}>
+    ${run(PageBackgrounds, "pb", parentRef)}
+    <div class="l-page__container${isMenuOpen ? " is-open" : ""}">
+      ${run(Header, "h", parentRef)}
+      <main>
+        ${currentPart && currentPart !== 5
+          ? run(Slider, "s", parentRef)
+          : run(CompareSlider, "cs", parentRef)}
+        ${currentPart && currentPart !== 5
+          ? run(BeforeAfterAd, "baa", parentRef)
+          : ""}
+      </main>
+      ${run(SocialLinks, "sl", parentRef)} ${run(Footer, "f", parentRef)}
+      ${isMenuOpen ? '<div class="page__button" id="js-page-btn"></div>' : ""}
     </div>
+    ${isMenuOpen && run(Navigation, "n", parentRef)}
+  </div>
 `;

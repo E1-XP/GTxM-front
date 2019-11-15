@@ -9,7 +9,9 @@ export interface Props {
 }
 
 export class Navigation extends Component {
-  onMount = () => {
+  props = ["currentPart", "menuImages"];
+
+  onMount() {
     const { menuImages } = this.model.getState<State>();
 
     menuImages!.forEach((itm, i) => {
@@ -18,9 +20,9 @@ export class Navigation extends Component {
       domRef &&
         domRef.closest("li").addEventListener("click", this.handleMenuClick);
     });
-  };
+  }
 
-  onUnmount = () => {
+  onUnmount() {
     const { menuImages } = this.model.getState<State>();
 
     menuImages!.forEach((itm, i) => {
@@ -29,7 +31,7 @@ export class Navigation extends Component {
       domRef &&
         domRef.closest("li").removeEventListener("click", this.handleMenuClick);
     });
-  };
+  }
 
   handleMenuClick = (e: any) => {
     const { currentPart } = this.model.getState();
@@ -41,7 +43,7 @@ export class Navigation extends Component {
     const deferRouteChange = () =>
       this.router.routeTo(`/${parts[clickedPart]}`);
 
-    this.model.setState({ isMenuOpen: false });
+    this.model.setState(() => ({ isMenuOpen: false }));
     if (differentPart) setTimeout(deferRouteChange, 500);
   };
 
