@@ -1,5 +1,4 @@
 const htmlWebpackPlugin = require("html-webpack-plugin");
-const uglifyJSPlugin = require("uglifyjs-webpack-plugin");
 
 module.exports = {
   entry: ["./src/index.ts", "./src/scss/main.scss"],
@@ -13,11 +12,11 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: ["awesome-typescript-loader"]
+        use: ["ts-loader"]
       },
       {
         test: /\.scss$/,
-        use: ["style-loader", "css-loader", "resolve-url-loader", "sass-loader"]
+        use: ["style-loader", "css-loader", "resolve-url-loader", { loader: "sass-loader", options: { sourceMap: true } }]
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -41,6 +40,6 @@ module.exports = {
     })
   ],
   devServer: {
-    contentBase: "./public"
+    static: "./public"
   }
 };

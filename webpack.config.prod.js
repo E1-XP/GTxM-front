@@ -1,13 +1,12 @@
 const path = require("path");
 const htmlWebpackPlugin = require("html-webpack-plugin");
-const uglifyJSPlugin = require("uglifyjs-webpack-plugin");
-const optimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const terserPlugin = require("terser-webpack-plugin");
+const cssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const miniCssExtractPlugin = require("mini-css-extract-plugin");
 const htmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const copyPlugin = require("copy-webpack-plugin");
 const webpackCleanPlugin = require("webpack-clean");
 const autoprefixer = require("autoprefixer");
-const cleanCSS = require("clean-css");
 
 module.exports = {
   entry: ["./src/index.ts", "./src/scss/main.scss"],
@@ -21,7 +20,7 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: ["awesome-typescript-loader"]
+        use: ["ts-loader"]
       },
       {
         test: /\.scss$/,
@@ -61,24 +60,14 @@ module.exports = {
       minify: { collapseWhitespace: true }
     }),
     new htmlWebpackInlineSourcePlugin(),
-    new copyPlugin([{ from: "./src/assets", to: "./assets" }]),
+    new copyPlugin({ patterns: [{ from: "./src/assets", to: "./assets" }] }),
     new webpackCleanPlugin(["./public/main.css", "./public/bundle.js"])
   ],
   optimization: {
+    minimize: true,
     minimizer: [
-      new uglifyJSPlugin({
-        uglifyOptions: {
-          compress: {
-            drop_console: true
-          },
-          output: {
-            comments: false
-          }
-        }
-      }),
-      new optimizeCSSAssetsPlugin({
-        cssProcessor: cleanCSS
-      })
+      new terserPlugin(),
+      new cssMinimizerPlugin(),
     ]
   }
 };
