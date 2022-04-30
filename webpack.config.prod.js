@@ -3,24 +3,25 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const terserPlugin = require("terser-webpack-plugin");
 const cssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const miniCssExtractPlugin = require("mini-css-extract-plugin");
-const htmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const copyPlugin = require("copy-webpack-plugin");
 const webpackCleanPlugin = require("webpack-clean");
-const autoprefixer = require("autoprefixer");
+const inlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
+const htmlInlineCSSWebpackPlugin =
+  require("html-inline-css-webpack-plugin").default;
 
 module.exports = {
   entry: ["./src/index.ts", "./src/scss/main.scss"],
   output: {
     path: path.join(__dirname, "/public"),
     publicPath: "/",
-    filename: "bundle.js"
+    filename: "bundle.js",
   },
   module: {
     rules: [
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: ["ts-loader"]
+        use: ["ts-loader"],
       },
       {
         test: /\.scss$/,
@@ -31,11 +32,16 @@ module.exports = {
           {
             loader: "postcss-loader",
             options: {
-              plugins: () => [autoprefixer()]
-            }
+              sourceMap: true,
+            },
           },
-          "sass-loader"
-        ]
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -43,31 +49,30 @@ module.exports = {
           loader: "file-loader",
           options: {
             outputPath: "../",
-            publicPath: "/public"
-          }
-        }
-      }
-    ]
+            publicPath: "/public",
+          },
+        },
+      },
+    ],
   },
   resolve: {
-    extensions: ["*", ".js", ".ts"]
+    extensions: ["*", ".js", ".ts"],
   },
   plugins: [
     new miniCssExtractPlugin(),
     new htmlWebpackPlugin({
+      inject: true,
       template: "./src/index.html",
       inlineSource: ".(js|css)$",
-      minify: { collapseWhitespace: true }
+      minify: { collapseWhitespace: true },
     }),
-    new htmlWebpackInlineSourcePlugin(),
+    new htmlInlineCSSWebpackPlugin(),
+    new inlineChunkHtmlPlugin(htmlWebpackPlugin, [/bundle/]),
     new copyPlugin({ patterns: [{ from: "./src/assets", to: "./assets" }] }),
-    new webpackCleanPlugin(["./public/main.css", "./public/bundle.js"])
+    new webpackCleanPlugin(["./public/main.css", "./public/bundle.js"]),
   ],
   optimization: {
     minimize: true,
-    minimizer: [
-      new terserPlugin(),
-      new cssMinimizerPlugin(),
-    ]
-  }
+    minimizer: [new terserPlugin(), new cssMinimizerPlugin()],
+  },
 };
