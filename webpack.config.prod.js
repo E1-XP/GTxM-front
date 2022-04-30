@@ -65,6 +65,7 @@ module.exports = {
       template: "./src/index.html",
       inlineSource: ".(js|css)$",
       minify: { collapseWhitespace: true },
+      scriptLoading : 'blocking'
     }),
     new htmlInlineCSSWebpackPlugin(),
     new inlineChunkHtmlPlugin(htmlWebpackPlugin, [/bundle/]),
