@@ -3,7 +3,6 @@ const htmlWebpackPlugin = require("html-webpack-plugin");
 const terserPlugin = require("terser-webpack-plugin");
 const cssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const miniCssExtractPlugin = require("mini-css-extract-plugin");
-const copyPlugin = require("copy-webpack-plugin");
 const webpackCleanPlugin = require("webpack-clean");
 const inlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const htmlInlineCSSWebpackPlugin =
@@ -48,7 +47,7 @@ module.exports = {
         use: {
           loader: "file-loader",
           options: {
-            outputPath: "../",
+            outputPath: "/public",
             publicPath: "/public",
           },
         },
@@ -69,7 +68,6 @@ module.exports = {
     }),
     new htmlInlineCSSWebpackPlugin(),
     new inlineChunkHtmlPlugin(htmlWebpackPlugin, [/bundle/]),
-    new copyPlugin({ patterns: [{ from: "./src/assets", to: "./assets" }] }),
     new webpackCleanPlugin(["./public/main.css", "./public/bundle.js"]),
   ],
   optimization: {
