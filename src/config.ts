@@ -1,7 +1,7 @@
 export default {
   API_URL:
     process.env.NODE_ENV === "production"
-      ? `${window.location.origin}/api`
-      : "https://gtxmotorsports.gtxcodeworks.site",
+      ? "https://gtxmotorsports.gtxcodeworks.site"
+      : "http://localhost:3001",
   API_URL_ORIGIN: "https://gtxmotorsports.gtxcodeworks.site",
 };
